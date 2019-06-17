@@ -157,4 +157,4 @@ function playAgain(msg, playBtn){
         player.y = 380;
     });
 }
-    
+ 

@@ -26,7 +26,7 @@ body {
 }
 
 .message.show{
-    animation: appear 350ms ease-in 1;
+    animation: appear 350ms ease-in forwards;
     visibility: visible;
     display: block;
 }
