@@ -4,7 +4,7 @@ var Enemy = function() {
     // we've provided one for you to get started
     this.posx = -20;
     this.posy = enemyoffset();
-    this.speed =  Math.random()*300 + 200;
+    this.speed =  Math.random()*300 + 100;
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
@@ -34,23 +34,25 @@ Enemy.prototype.render = function() {
 // This class requires an update(), render() and
 // a handleInput() method.
 var Player = function() {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
     this.x = 0;
     this.y = 380;
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
     this.sprite = 'images/char-boy.png';
 };
-var player = new Player();
+
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(player.sprite), player.x, player.y);
 };
 
+var player = new Player();
 var allEnemies = [];
-for(var i = 0; i < 3; i++){
-    allEnemies.push(new Enemy());
+addEnemies();
+
+function addEnemies(){
+    for(var i = 0; i < 3; i++){
+        allEnemies.push(new Enemy());
+    }
 }
+
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
@@ -107,11 +109,8 @@ player.handleInput = function(inputKey){
 
 function checkCollisions(){
     allEnemies.forEach((enemy)=>{
-        var proximity = getDistance(enemy.posx, enemy.posy, player.x, player.y)
-        if(proximity < 60){
-            player.x = 0;
-            player.y = 380;
-        }
+        var proximity = getDistance(enemy.posx, enemy.posy, player.x, player.y);
+        reset(proximity);
     })
 }
 
@@ -124,5 +123,38 @@ function getDistance(x1, y1, x2, y2){
 
 function checkWin(){
     if(player.y === -20){
+        allEnemies = [];
+        var selectors = initSelectors(); 
+        displaymessage(selectors[0]);
+        playAgain(selectors[0], selectors[1]);
     }
 }
+
+function initSelectors(){
+    var msg = document.querySelector(".message");
+    var btn = document.querySelector('.play_button');
+    return [msg, btn];
+}
+
+function displaymessage(display){
+    display.classList.add('show');
+    document.body.appendChild(display);
+}
+
+function reset(dist){
+    if(dist < 55){
+        player.x = 0;
+        player.y = 380;
+    }
+}
+
+function playAgain(msg, playBtn){
+    playBtn.addEventListener('click', function(){
+        allEnemies = [];
+        msg.classList.remove('show');
+        addEnemies();
+        player.x = 0;
+        player.y = 380;
+    });
+}
+    
