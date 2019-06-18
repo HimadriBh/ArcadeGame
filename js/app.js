@@ -23,6 +23,17 @@ Enemy.prototype.update = function(dt) {
     this.posx += this.speed*dt;
 };
 
+var Gem = function(x, y, image){
+    this.x = x;
+    this.y = y;
+
+    this.sprite = image;
+}
+
+Gem.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
@@ -50,11 +61,14 @@ let allEnemies = [
     new Enemy(-20, 220),
     new Enemy(-20, 60)
 ];
+
+let allGems = [
+    new Gem(202, 400, 'images/Gem Green.png'),
+    new Gem(404, 400, 'images/Gem Blue.png'),
+];
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-
-
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
@@ -101,13 +115,16 @@ Player.prototype.handleInput = function(inputKey){
             this.y += moveDown;
         }
     }
+    collectedGem();
     checkWin();
 }
 
 function checkCollisions(){
     allEnemies.forEach((enemy)=>{
         var proximity = getDistance(enemy.posx, enemy.posy, player.x, player.y);
-        reset(proximity);
+        if(proximity < 55){
+            player = new Player();
+        }
     })
 }
 
@@ -141,12 +158,6 @@ function displaymessage(display){
     document.body.appendChild(display);
 }
 
-function reset(dist){
-    if(dist < 55){
-        player = new Player();
-    }
-}
-
 function playAgain(msg, playBtn){
     playBtn.addEventListener('click', function(){
         allEnemies = [];
@@ -160,4 +171,10 @@ function playAgain(msg, playBtn){
         player = new Player();
     });
 }
- 
+
+function collectedGem(){     
+    allGems= allGems.filter(function(gem){
+        var proximity = getDistance(gem.x, gem.y, player.x, player.y);
+        return proximity > 55;
+    });
+}
