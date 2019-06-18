@@ -1,9 +1,9 @@
 // Enemies our player must avoid
-var Enemy = function() {
+var Enemy = function(x, y) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
-    this.posx = -20;
-    this.posy = enemyoffset();
+    this.posx = x;
+    this.posy = y;
     this.speed =  Math.random()*300 + 100;
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
@@ -44,15 +44,12 @@ Player.prototype.render = function() {
 };
 
 var player = new Player();
-var allEnemies = [];
-addEnemies();
-
-function addEnemies(){
-    for(var i = 0; i < 3; i++){
-        allEnemies.push(new Enemy());
-    }
-}
-
+let allEnemies = [
+    new Enemy(-20, 60),
+    new Enemy(-20, 140),
+    new Enemy(-20, 220),
+    new Enemy(-20, 60)
+];
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
@@ -79,7 +76,7 @@ function enemyoffset(){
     return posValues[posIdx];
 }
 
-player.handleInput = function(inputKey){
+Player.prototype.handleInput = function(inputKey){
     if(inputKey === 'up'){
         var moveUp = 80;
         if(this.y > 0){
@@ -137,14 +134,16 @@ function initSelectors(){
 }
 
 function displaymessage(display){
+    player = new Player();
+    player.x = -1000;
+    player.y = -1000;
     display.classList.add('show');
     document.body.appendChild(display);
 }
 
 function reset(dist){
     if(dist < 55){
-        player.x = 0;
-        player.y = 380;
+        player = new Player();
     }
 }
 
@@ -152,9 +151,13 @@ function playAgain(msg, playBtn){
     playBtn.addEventListener('click', function(){
         allEnemies = [];
         msg.classList.remove('show');
-        addEnemies();
-        player.x = 0;
-        player.y = 380;
+        allEnemies = [
+            new Enemy(-20, 60),
+            new Enemy(-20, 140),
+            new Enemy(-20, 220),
+            new Enemy(-20, 60)
+        ];
+        player = new Player();
     });
 }
  
