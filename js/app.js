@@ -170,6 +170,11 @@ function playAgain(msg, playBtn){
             new Enemy(-20, 60)
         ];
         player = new Player();
+        allGems = [
+            new Gem(202, 400, 'images/Gem Green.png'),
+            new Gem(404, 400, 'images/Gem Blue.png'),
+            new Gem(404, -40, 'images/Gem Orange.png'),
+        ];
     });
 }
 
