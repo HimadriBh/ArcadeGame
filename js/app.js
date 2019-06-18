@@ -65,6 +65,7 @@ let allEnemies = [
 let allGems = [
     new Gem(202, 400, 'images/Gem Green.png'),
     new Gem(404, 400, 'images/Gem Blue.png'),
+    new Gem(404, -40, 'images/Gem Orange.png'),
 ];
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
